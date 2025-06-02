@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const auth_1 = require("../middleware/auth");
+const types_1 = require("../types");
+const inventory_controller_1 = require("../controllers/inventory.controller");
+const router = (0, express_1.Router)();
+router.get('/', auth_1.authenticateToken, inventory_controller_1.getInventoryItems);
+router.post('/', auth_1.authenticateToken, (0, auth_1.authorizeRoles)(types_1.UserRole.ADMIN), inventory_controller_1.addInventoryItem);
+router.put('/:id', auth_1.authenticateToken, (0, auth_1.authorizeRoles)(types_1.UserRole.ADMIN), inventory_controller_1.updateInventoryItem);
+router.delete('/:id', auth_1.authenticateToken, (0, auth_1.authorizeRoles)(types_1.UserRole.ADMIN), inventory_controller_1.deleteInventoryItem);
+router.post('/borrow', auth_1.authenticateToken, inventory_controller_1.borrowItem);
+router.post('/return/:lendingId', auth_1.authenticateToken, inventory_controller_1.returnItem);
+exports.default = router;

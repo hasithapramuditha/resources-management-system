@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const auth_1 = require("../middleware/auth");
+const types_1 = require("../types");
+const lab_controller_1 = require("../controllers/lab.controller");
+const router = (0, express_1.Router)();
+router.get('/availability', auth_1.authenticateToken, lab_controller_1.getLabAvailability);
+router.get('/reservations', auth_1.authenticateToken, lab_controller_1.getLabReservations);
+router.post('/reserve', auth_1.authenticateToken, (0, auth_1.authorizeRoles)(types_1.UserRole.LECTURER), lab_controller_1.createLabReservation);
+router.put('/reservations/:id', auth_1.authenticateToken, (0, auth_1.authorizeRoles)(types_1.UserRole.ADMIN), lab_controller_1.updateLabReservation);
+exports.default = router;

@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const auth_1 = require("../middleware/auth");
+const types_1 = require("../types");
+const printer_controller_1 = require("../controllers/printer.controller");
+const router = (0, express_1.Router)();
+router.get('/', auth_1.authenticateToken, printer_controller_1.getPrinters);
+router.get('/availability', auth_1.authenticateToken, printer_controller_1.getPrinterAvailability);
+router.post('/reserve', auth_1.authenticateToken, printer_controller_1.createPrinterReservation);
+router.put('/reservations/:id', auth_1.authenticateToken, (0, auth_1.authorizeRoles)(types_1.UserRole.ADMIN), printer_controller_1.updatePrinterReservation);
+exports.default = router;
