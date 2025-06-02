@@ -16,7 +16,11 @@ const comparePasswords = async (password, hash) => {
 };
 exports.comparePasswords = comparePasswords;
 const generateToken = (user) => {
-    return jsonwebtoken_1.default.sign({ userId: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
+    const secret = process.env.JWT_SECRET;
+    if (!secret) {
+        throw new Error('JWT_SECRET is not defined');
+    }
+    return jsonwebtoken_1.default.sign({ userId: user.id, role: user.role }, secret, { expiresIn: '24h' });
 };
 exports.generateToken = generateToken;
 class ApiError extends Error {
@@ -28,8 +32,13 @@ class ApiError extends Error {
 }
 exports.ApiError = ApiError;
 const asyncHandler = (fn) => {
-    return (req, res, next) => {
-        Promise.resolve(fn(req, res, next)).catch(next);
+    return async (req, res, next) => {
+        try {
+            await fn(req, res, next);
+        }
+        catch (error) {
+            next(error);
+        }
     };
 };
 exports.asyncHandler = asyncHandler;

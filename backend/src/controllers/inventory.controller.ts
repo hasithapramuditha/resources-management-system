@@ -8,7 +8,7 @@ export const getInventoryItems: AsyncController = asyncHandler(async (req, res) 
   res.json(result.rows);
 });
 
-export const addInventoryItem: AsyncController = asyncHandler(async (req, res) => {
+export const addInventoryItem: AsyncController = async (req, res) => {
   const { name, quantity } = req.body;
 
   const result = await pool.query(

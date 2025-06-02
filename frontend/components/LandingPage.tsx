@@ -1,7 +1,7 @@
 
-import React, { useState, useEffect } from 'react';
-import { useApp } from '../App';
-import { UserRole, Student, Lecturer } from '../types';
+import React, { useState } from 'react';
+import { UserRole } from '../types';
+import { useAuth } from '../context/AuthContext';
 
 const LandingPage: React.FC = () => {
   const { login, registerStudent, lecturers } = useApp();
